@@ -1,0 +1,100 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+class student
+{
+private:
+	string Name , Semester , SapId , Cgpa ;
+public:
+	void menu();
+	void insert();
+	void display();
+};
+
+void student::menu()
+{
+menustart:
+	int choice;
+	char x;
+	
+	cout << "\t\t    Enter New Record" << endl;
+	cout << "\t\t    Display Record" << endl;
+	cout << "\t\t    Terminate" << endl;
+	cout << "\t\tChoose Option:[1/2/3]" << endl;
+	cout << "Enter Your Choice: ";
+	cin >> choice;
+
+	switch (choice)
+	{
+	case 1:
+		do
+		{
+			insert();
+			cout << "\nAdd Another Student Record (Y,N): ";
+			cin >> x;
+		} while (x == 'y' || x == 'Y');
+		break;
+	case 2:
+		display();
+		break;
+	case 3:
+		terminate();
+	default:
+		cout << "\n Invalid choice... Please Try Again..";
+	}
+	goto menustart;
+}
+
+void student::insert() 
+{
+	fstream file;
+	cout << "\t\tEnter Name: ";
+	cin >>Name;
+	cout << "\t\tEnter Semester: ";
+	cin >>Semester;
+	cout << "\t\tEnter SapId: ";
+	cin >>SapId;
+	cout << "\t\tEnter Cgpa: ";
+	cin >> Cgpa;
+	file.open("Record.txt", ios::app | ios::out);
+	file << " " << Name << " " << Semester <<" " << SapId << " " << Cgpa << "\n";
+	file.close();
+}
+
+void student::display()
+{
+	fstream file;
+	int total =0;
+	file.open("Record.txt", ios::in);
+	if (!file)
+	{
+		cout << "\n\t\t\tNo Data Is Present...";
+		file.close();
+	}
+	else
+	{
+		file >> Name >>Semester >> SapId >> Cgpa;
+		while (!file.eof())
+		{
+			cout << "\n\n\t\t No " << ++total << endl;
+			cout << "\t\t Name" << Name << endl;
+			cout << "\t\t Semester  " << Semester << endl;
+			cout << "\t\t SapId " << SapId << endl;
+			cout << "\t\t Cgpa " << Cgpa << endl;
+			file >> Name >> Semester >> SapId >> Cgpa;
+		}
+		if (total == 0)
+		{
+			cout << "\n\t\tNo Data Is Present...";
+		}
+	}
+	file.close();
+}
+	
+int main()
+{
+	student project;
+    project.menu();
+	return 0;
+}
